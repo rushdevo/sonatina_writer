@@ -1,7 +1,9 @@
 package com.rushdevo.sonatina.writer;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.View.OnClickListener;
 
@@ -27,14 +29,28 @@ public class Home extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch(v.getId()) {
 		case R.id.new_button:
-    		// TODO
+    		createScore();
     		break;
 		case R.id.open_button:
-			// TODO
+			openScore();
 			break;
 		case R.id.exit_button:
 			finish();
 			break;
+		}
+	}
+	
+	public void createScore() {
+		startActivity(new Intent(this, ScoreContainer.class));
+		finish();
+	}
+	
+	public void openScore() {
+		if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
+			// TODO
+		} else {
+			// Something is wrong with external storage...
+			// TODO
 		}
 	}
 }

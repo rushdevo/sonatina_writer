@@ -1,16 +1,17 @@
 package com.rushdevo.sonatina.lib;
 
-import com.rushdevo.sonatina.writer.R;
-
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
+
+import com.rushdevo.sonatina.lib.data.Part;
+import com.rushdevo.sonatina.lib.data.Score;
+import com.rushdevo.sonatina.writer.R;
 
 public class ScoreDrawer {
 	
-	private static final int FIRST_STAFF_OFFSET = 60;
-	private static final int STAFF_OFFSET = 100;
+	private static final int FIRST_PART_OFFSET = 60;
+	private static final int PART_OFFSET = 100;
 	private static final int STAFF_LINE_OFFSET = 10;
 	
 	private Score score;
@@ -52,8 +53,8 @@ public class ScoreDrawer {
 		resizeView();
 		drawBackground();
 		drawTitle();
-		for (Staff staff : score.getStaves()) {
-			drawStaff(staff);
+		for (Part part : score.getParts()) {
+			drawPart(part);
 		}
 	}
 	
@@ -61,7 +62,7 @@ public class ScoreDrawer {
 	 * Draw the title of the score
 	 */
 	public void drawTitle() {
-		canvas.drawText(score.getTitle(), 30, 30, this.titleTextPaint);
+		canvas.drawText(score.getWorkTitle(), 30, 30, this.titleTextPaint);
 	}
 	
 	/**
@@ -74,10 +75,10 @@ public class ScoreDrawer {
 	/**
 	 * Draw a staff
 	 * 
-	 * @param staff - The staff object defining the staff to draw
+	 * @param part - The part object defining the staff to draw
 	 */
-	public void drawStaff(Staff staff) {
-		int offset = FIRST_STAFF_OFFSET + (staff.getPosition()*STAFF_OFFSET);
+	public void drawPart(Part part) {
+		int offset = FIRST_PART_OFFSET + (part.getPosition()*PART_OFFSET);
 		for (int line=0; line<5; line++) {
 			int y = offset+(line*STAFF_LINE_OFFSET);
 			this.canvas.drawLine(10, y, 1000, y, this.staffPaint);

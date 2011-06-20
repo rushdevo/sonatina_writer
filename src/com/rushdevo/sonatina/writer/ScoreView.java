@@ -4,8 +4,8 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.view.View;
 
-import com.rushdevo.sonatina.lib.Score;
 import com.rushdevo.sonatina.lib.ScoreDrawer;
+import com.rushdevo.sonatina.lib.data.Score;
 
 /**
  * @author jasonrush

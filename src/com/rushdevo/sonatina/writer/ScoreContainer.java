@@ -5,7 +5,8 @@ import android.os.Bundle;
 import android.widget.ScrollView;
 
 import com.rushdevo.sonatina.lib.Constants;
-import com.rushdevo.sonatina.lib.Score;
+import com.rushdevo.sonatina.lib.data.RecordNotFoundException;
+import com.rushdevo.sonatina.lib.data.Score;
 
 /**
  * @author jasonrush
@@ -22,15 +23,23 @@ public class ScoreContainer extends Activity {
 		super.onCreate(savedInstanceState);
         scrollView = new ScrollView(this);
         scrollView.setFillViewport(true);
-		scoreView = new ScoreView(this, retrieveOrCreateScore());
+		try {
+			scoreView = new ScoreView(this, retrieveOrCreateScore());
+		} catch (RecordNotFoundException e) {
+			// TODO: What should happen here? Can't find the score in the database. Display error
+		}
 		scrollView.addView(scoreView);
 		setContentView(scrollView);
         scoreView.requestFocus();
 	}
 	
-	private Score retrieveOrCreateScore() {
+	private Score retrieveOrCreateScore() throws RecordNotFoundException {
 		Bundle extras = getIntent().getExtras();
-        String filename = (extras == null) ? null : extras.getString(Constants.SCORE_FILENAME);
-        return new Score(filename);
+        Integer scoreId = (extras != null) ? extras.getInt(Constants.SCORE_ID) : null;
+        if (scoreId == null) {
+        	return new Score(this);
+        } else {
+        	return new Score(scoreId, this);
+        }
 	}
 }

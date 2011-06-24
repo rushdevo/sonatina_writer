@@ -4,7 +4,6 @@ import static android.provider.BaseColumns._ID;
 import static com.rushdevo.sonatina.lib.Constants.DATABASE_NAME;
 import static com.rushdevo.sonatina.lib.Constants.DATABASE_VERSION;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
@@ -23,6 +22,7 @@ public class Score extends DataObject {
 	private String workTitle;
 	private String creator;
 	private List<Part> parts;
+	private Context ctx;
 	
 	// Table and column info
 	public static final String TABLE_NAME = "scores"; 
@@ -52,8 +52,10 @@ public class Score extends DataObject {
 		super(ctx, DATABASE_NAME, null, DATABASE_VERSION);
 		setId(id);
 		loadOrDefault();
+		this.ctx = ctx;
 	}
 	
+	// SQLiteOpenHelper overrides
 	@Override
 	public void onCreate(SQLiteDatabase db) {
 		StringBuilder sql = new StringBuilder();
@@ -76,12 +78,7 @@ public class Score extends DataObject {
 	
 	public List<Part> getParts() {
 		if (this.parts == null) {
-			if (isNewRecord()) {
-				this.parts = new ArrayList<Part>();
-				this.parts.add(Part.defaultPart());
-			} else {
-				this.parts = Part.forScore(this);
-			}
+			this.parts = Part.forScoreOrDefault(this.ctx, this);
 		}
 		return this.parts;
 	}
